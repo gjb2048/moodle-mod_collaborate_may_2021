@@ -48,3 +48,6 @@ $string['nocollaborates'] = '';
 // Mod form specific collaborate settings.
 $string['title'] = 'Activity title: ';
 $string['title_help'] = 'Please enter a suitable title for your collaborate main page';
+
+// Week 2 Task 1.
+$string['pageviewed'] = 'Page viewed';
