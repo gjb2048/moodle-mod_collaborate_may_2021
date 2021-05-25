@@ -16,9 +16,9 @@
 }}
 
 {{!
-    @template mod_collaborate/view
+    @template mod_collaborate/showpage
 
-    Moodle renders a simple view page
+    Moodle renders a simple showpage page
 
     Classes required for JS:
     * none
@@ -27,25 +27,30 @@
     * none
 
     Context variables required for this template:
-    * title String a page title.
-    * body String of html code the formatted module intro.
-    * extra String extra.
+    * heading String a page heading.
+    * user String The user.
+    * body String of html code.
+    * url_view string Return url.
 
     Example context (json):
-        {
-         "title": "My heading",
-         "body": "<p>My html body</p>"
-         "extra": "Developer"
-        }
+    {
+        "heading": "My heading",
+        "user": "User: A"
+        "body": "Markup"
+        "url_view": "http://mysite/mod/collaborate/view.php?id=3"
+    }
 }}
-<div class="card">
+<div class = "container">
+  <div class="card">
     <div class="card-body">
-        <h2 class="card-title">{{title}}</h2>
-        {{{body}}}
-        <p>{{extra}}</p>
-        <div class="container">
-            <a href="{{url_a}}" class="btn btn-primary">{{# str }} studenta, mod_collaborate {{/ str }}</a>
-            <a href="{{url_b}}" class="btn btn-primary">{{# str }} studentb, mod_collaborate {{/ str }}</a>
-        </div>
+      <h2 class="card-title">{{heading}}</h2>
+      <h3>{{user}}</h3>
+      {{{body}}}
+    </div>
   </div>
+  <p><br>
+    <a href = "{{url_view}}" class="btn btn-primary">
+       {{# str }} returnview, mod_collaborate {{/ str }}
+    </a>
+  </p>
 </div>
