@@ -71,4 +71,34 @@ class collaborate_editor {
             'trusttext' => false
         ];
     }
+
+    /**
+     * Updates an instance of the collaborate in the database
+     *
+     * Given an object containing all the necessary data,
+     * (defined by the form in mod_form.php) this function
+     * will update an existing instance with new data.
+     *
+     * @param stdClass $collaborate An object from the form in mod_form.php
+     * @param mod_collaborate_mod_form $mform The form instance itself (if needed)
+     * @return boolean Success/Fail.
+     */
+    public static function update_editor_instance_helper(\stdClass $collaborate, \mod_collaborate_mod_form $mform = null) {
+        global $DB;
+
+        // Save files and process editor content.
+        $cmid = $collaborate->coursemodule;
+        $context = \context_module::instance($cmid);
+        $options = self::get_editor_options($context);
+        $names = self::get_editor_names();
+
+        foreach ($names as $name) {
+            $collaborate = \file_postupdate_standard_editor($collaborate, $name, $options,
+                $context, 'mod_collaborate', $name, $collaborate->id);
+        }
+
+        $result = $DB->update_record('collaborate', $collaborate);
+
+        return $result;
+    }
 }
