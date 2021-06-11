@@ -117,7 +117,7 @@ class reports implements renderable, templatable {
     public static function get_submission_record_headers() {
         return [
             get_string('id', 'mod_collaborate'),
-            get_string('title', 'mod_collaborate'),
+            get_string('reporttitle', 'mod_collaborate'),
             get_string('submission','mod_collaborate'),
             get_string('firstname', 'core'),
             get_string('lastname', 'core'),

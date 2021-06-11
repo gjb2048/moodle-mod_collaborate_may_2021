@@ -80,6 +80,7 @@ $string['submissionupdated'] = 'Submission updated';
 
 // Reports - Week 6 Task 1.
 $string['id'] = 'Id';
+$string['reporttitle'] = 'Title';
 
 // Reports - Week 6 Task 2.
 $string['allocate_grade'] = 'Allocate grade';
