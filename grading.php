@@ -15,7 +15,7 @@
 // along with Moodle.  If not, see <http://www.gnu.org/licenses/>.
 
 /**
- * Prints a particular instance of collaborate
+ * Prints a submissions grading page.
  *
  * @package    mod_collaborate
  * @copyright  2019 Richard Jones richardnz@outlook.com
@@ -23,15 +23,14 @@
  * @see https://github.com/moodlehq/moodle-mod_simplemod
  * @see https://github.com/justinhunt/moodle-mod_simplemod */
 
-use mod_collaborate\output\showpage;
 use \core\output\notification;
 use \mod_collaborate\local\submissions;
-use \mod_collaborate\local\submission_form;
-use \mod_collaborate\local\collaborate_editor;
+use \mod_collaborate\local\grading_form;
+use \mod_collaborate\output\grading;
 require_once('../../config.php');
 
-// The user page id and the collaborate instance id.
-$page = required_param('page', PARAM_TEXT);
+// The submission id and the collaborate instance id.
+$sid = required_param('sid', PARAM_TEXT);
 $cid = required_param('cid', PARAM_INT);
 
 // Get the information required to check the user can access this page.
@@ -42,33 +41,38 @@ $course = $DB->get_record('course', ['id' => $courseid], '*', MUST_EXIST);
 $context = context_module::instance($cm->id);
 
 // Set the page URL.
-$PAGE->set_url('/mod/collaborate/showpage.php', ['cid' => $cid, 'page' => $page]);
+$PAGE->set_url('/mod/collaborate/grading.php', ['cid' => $cid, 'sid' => $sid]);
 
 // Check the user is logged on.
 require_login($course, true, $cm);
+
+// Check permissions.
+require_capability('mod/collaborate:gradesubmission', $context);
 
 // Set the page information.
 $PAGE->set_title(format_string($collaborate->name));
 $PAGE->set_heading(format_string($course->fullname));
 
+// Get the submission information.
+$submission = submissions::get_submission_to_grade($collaborate, $sid);
+
 // Instantiate the form and set the return url.
-$form = new submission_form(null, ['context' => $context, 'cid' => $cid, 'page' => $page]);
-$returnurl = new moodle_url('/mod/collaborate/showpage.php', ['cid' => $cid, 'page' => $page]);
+$form = new grading_form(null, ['cid' => $cid, 'sid' => $sid, 'currentgrade' => $submission->grade]);
+$reportsurl = new moodle_url('/mod/collaborate/reports.php', ['cid' => $cid]);
+
+// Check if cancelled.
+if ($form->is_cancelled()) {
+    redirect($reportsurl, get_string('cancelled'), 2, notification::NOTIFY_INFO);
+}
 
 // Do we have any data - save it and notify the user.
 if ($data = $form->get_data()) {
     // Save the data here.
-    submissions::save_submission($data, $context, $cid, $page);
-    redirect ($returnurl, get_string('submissionupdated', 'mod_collaborate'), null, notification::NOTIFY_SUCCESS);
+    submissions::update_grade($sid, $data->grade);
+    redirect ($reportsurl, get_string('submissiongraded', 'mod_collaborate'), 2, notification::NOTIFY_SUCCESS);
 }
 
-// Set the saved data (if any) to the form.
-$data = new stdClass();
-$data = submissions::get_submission($cid, $USER->id, $page);
 if ($data) {
-    $options = collaborate_editor::get_editor_options($context);
-    $data = file_prepare_standard_editor($data, 'submission', $options, $context, 'mod_collaborate', 'submission',
-        $data->id);
     $form->set_data($data);
 }
 
@@ -76,7 +80,7 @@ if ($data) {
 echo $OUTPUT->header();
 
 // Create output object and render it using the template.
-echo $OUTPUT->render(new showpage($collaborate, $cm, $page));
+echo $OUTPUT->render(new grading($submission, $cm->id, $sid));
 
 // Show the form on the page.
 $form->display();
