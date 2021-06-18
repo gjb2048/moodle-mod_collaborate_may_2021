@@ -99,3 +99,7 @@ $string['namechange'] = 'Change name';
 
 // Tasks - Week 7 Task 1.
 $string['exportall'] = 'Export all';
+
+// Events - Week 7 Task 3.
+$string['submission_submitted'] = 'Submission submitted';
+$string['submission_graded'] = 'Submission graded';
