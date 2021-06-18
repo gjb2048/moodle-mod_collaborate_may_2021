@@ -96,3 +96,6 @@ $string['exportlink'] = 'Export submissions to pdf';
 
 // Navigation - Week 7 Name changer.
 $string['namechange'] = 'Change name';
+
+// Tasks - Week 7 Task 1.
+$string['exportall'] = 'Export all';
