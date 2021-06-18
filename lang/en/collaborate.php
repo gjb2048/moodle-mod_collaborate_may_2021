@@ -90,3 +90,6 @@ $string['submissiongraded'] = 'Submission graded';
 $string['gradingheader'] = 'Grade a submission';
 $string['grade_saved'] = 'Grade saved';
 $string['user'] = 'User:';
+
+// Data export classes - Week 7.
+$string['exportlink'] = 'Export submissions to pdf';
