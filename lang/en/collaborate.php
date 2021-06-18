@@ -93,3 +93,6 @@ $string['user'] = 'User:';
 
 // Data export classes - Week 7.
 $string['exportlink'] = 'Export submissions to pdf';
+
+// Navigation - Week 7 Name changer.
+$string['namechange'] = 'Change name';
