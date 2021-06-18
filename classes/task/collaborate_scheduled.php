@@ -15,25 +15,35 @@
 // along with Moodle.  If not, see <http://www.gnu.org/licenses/>.
 
 /**
- * This file keeps track of scheduled tasks
+ * Class for handling a scheduled task.
  *
- * @package    mod_collaborate
- * @copyright  2019 Richard Jones richardnz@outlook.com
- * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
- * @see https://github.com/moodlehq/moodle-mod_newmodule
- * @see https://github.com/justinhunt/moodle-mod_pairwork
+ * @package   mod_collaborate
+ * @copyright 2020 Richard Jones https://richardnz.net
+ * @license   http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
+namespace mod_collaborate\task;
 
 defined('MOODLE_INTERNAL') || die();
 
-$tasks = [
-    [
-        'classname' => 'mod_collaborate\task\collaborate_scheduled',
-        'blocking' => 0,
-        'minute' => '*/1',
-        'hour' => '*',
-        'day' => '*',
-        'dayofweek' => '*',
-        'month' => '*'
-    ]
-];
+/**
+ * A scheduled task.
+ *
+ * @package    mod_collaborate
+ * @since      Moodle 2.7
+ * @copyright  2015 Flash Gordon http://www.flashgordon.com
+ * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
+ */
+class collaborate_scheduled extends \core\task\scheduled_task {
+
+    public function get_name() {
+        // Shown in admin screens
+        return get_string('exportall', 'mod_collaborate');
+
+    }
+     /**
+     *  Run all the tasks
+     */
+     public function execute() {
+       \mod_collaborate\local\submissions::export_all_submissions();
+    }
+}
