@@ -60,7 +60,8 @@ $completion = new completion_info($course);
 $completion->set_module_viewed($cm);
 
 // Let's add the module viewed event.
-$event = \mod_collaborate\event\page_viewed::create(['context' => $PAGE->context, 'objectid' => $id]);
+//error_log('Collaborate view.php: '.$id.' - '.$PAGE->cm->instance.' - '.$collaborate->id.' - '.$cm->instance);
+$event = \mod_collaborate\event\page_viewed::create(['context' => $PAGE->context, 'objectid' => $collaborate->id]);
 $event->add_record_snapshot('course_modules', $cm);
 $event->add_record_snapshot('course', $PAGE->course);
 $event->add_record_snapshot($PAGE->cm->modname, $collaborate);

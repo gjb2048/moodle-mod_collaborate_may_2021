@@ -37,6 +37,7 @@ class page_viewed extends \core\event\base {
     public static function get_name() {
         return get_string('pageviewed', 'mod_collaborate');
     }
+
     /**
      * Returns non-localised event description with id's for admin use only.
      *
