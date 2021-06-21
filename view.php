@@ -26,26 +26,12 @@
 use mod_collaborate\output\view;
 require_once('../../config.php');
 
-// We need the course module id (id) or
-// the collaborate instance id (n).
-$id = optional_param('id', 0, PARAM_INT);
-$n  = optional_param('n', 0, PARAM_INT);
+// We need the Collaborate instance id.
+$id = required_param('id', PARAM_INT);
 
-if ($id) {
-    $cm = get_coursemodule_from_id('collaborate', $id, 0, false,
-            MUST_EXIST);
-    $course = $DB->get_record('course',
-            array('id' => $cm->course), '*', MUST_EXIST);
-    $collaborate = $DB->get_record('collaborate',
-            array('id' => $cm->instance), '*', MUST_EXIST);
-} else if ($n) {
-    $collaborate = $DB->get_record('collaborate', array('id' => $n), '*',
-            MUST_EXIST);
-    $course = $DB->get_record('course',
-            array('id' => $collaborate->course), '*', MUST_EXIST);
-    $cm = get_coursemodule_from_instance('collaborate', $collaborate->id,
-            $course->id, false, MUST_EXIST);
-}
+$cm = get_coursemodule_from_id('collaborate', $id, 0, false, MUST_EXIST);
+$course = $DB->get_record('course', ['id' => $cm->course], '*', MUST_EXIST);
+$collaborate = $DB->get_record('collaborate', ['id' => $cm->instance], '*', MUST_EXIST);
 
 // Print the page header.
 $PAGE->set_url('/mod/collaborate/view.php', array('id' => $cm->id));
